@@ -1,0 +1,42 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+
+  #whole {
+    margin: 10px;
+  }
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  #board {
+    padding: 0px;
+    margin: 0 auto;
+    margin-top: 25px;
+  }
+
+  #board tr td {
+    width: 150px;
+    height: 150px;
+    border: 5px solid #1c1c1c;
+    font-family: Helvetica;
+    font-size: 30px;
+    text-align: center;
+  }
+
+  #board tr td:hover {
+    background: red;
+    opacity: .7;
+    cursor: pointer;
+  }
+
+  #score {
+    width: 450px;
+    margin: 0 auto;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
