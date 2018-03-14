@@ -1,90 +1,101 @@
 const game = {
   move: 1,
-  play: true,
+  play: false,
+  //type: null,
+  type: 3,
   playAgainstComp: true,
-  status: [["", "", ""], ["", "", ""], ["", "", ""]],
-  currentPlayer: {
-    marker: "X",
-    symbol: null,
-    name: "",
-    numberOfWins: 0,
-    isComputer: true
-  },
+  //board: null,
+  board: [["", "", ""], ["", "", ""], ["", "", ""]],
+  currentPlayer: {},
   player1: {
     marker: "X",
-    symbol: null,
-    name: "",
-    numberOfWins: 0,
-    isComputer: true
-  },
-  player2: {
-    marker: "O",
-    symbol: null,
+    symbol: `<i class="fas fa-times fa-3x" style="color: purple"></i>`,
     name: "",
     numberOfWins: 0,
     isComputer: false
   },
-  checkingWinningConditions: function() {
-    const winningCondition = `${this.currentPlayer.marker}${
-      this.currentPlayer.marker
-    }${this.currentPlayer.marker}`;
+  player2: {
+    marker: "O",
+    symbol: `<i class="far fa-circle fa-3x" style="color: blue"></i>`,
+    name: "",
+    numberOfWins: 0,
+    isComputer: false
+  },
+  reset: function() {
+    localStorage.clear();
+    this.move = 1;
+    this.play = true;
+    this.type = null;
+    this.playAgainstComp = false;
+    this.board = null;
+    this.currentPlayer = {};
+    this.player1 = {
+      marker: "X",
+      symbol: null,
+      name: "",
+      numberOfWins: 0,
+      isComputer: false
+    };
+    this.player2 = {
+      marker: "O",
+      symbol: null,
+      name: "",
+      numberOfWins: 0,
+      isComputer: false
+    };
+  },
+  checkRowForWinner: function() {
+    const winningCondition = this.currentPlayer.marker.repeat(this.type);
 
-    for (let i = 0; i < this.status.length; i++) {
-      if (this.status[i].join("") === winningCondition) {
-        console.log(`Player ${this.currentPlayer.marker} is the winner!`);
-        if (this.currentPlayer.marker === "X") {
-          this.player1.numberOfWins++;
-        } else {
-          this.player2.numberOfWins++;
-        }
-        game.play = false;
+    //Iterate over this.board.length (ex. 3)
+    for (let i = 0; i < this.board.length; i++) {
+      //Row evaluation
+      if (this.board[i].join("") === winningCondition) {
+        return true;
       }
     }
+  },
+  checkColumnForWinner: function() {
+    const winningCondition = this.currentPlayer.marker.repeat(this.type);
 
-    const vertical1 = this.status.map(arr => {
-      return arr[0];
-    });
+    let columnArr = [];
 
-    if (vertical1.join("") === winningCondition) {
-      console.log(`Player ${this.currentPlayer.marker} is the winner!`);
-      game.play = false;
-    }
+    for (let i = 0; i < this.board.length; i++) {
+      //0, 1, 2
+      const newArr = this.board.map(singleArr => {
+        return singleArr[i];
+      });
 
-    const vertical2 = this.status.map(arr => {
-      return arr[1];
-    });
+      columnArr.push(newArr);
 
-    if (vertical2.join("") === winningCondition) {
-      console.log(`Player ${this.currentPlayer.marker} is the winner!`);
-      game.play = false;
-    }
-
-    const vertical3 = this.status.map(arr => {
-      return arr[2];
-    });
-
-    if (vertical3.join("") === winningCondition) {
-      console.log(`Player ${this.currentPlayer.marker} is the winner!`);
-      game.play = false;
-    }
-
-    if (
-      vertical1[0] === this.currentPlayer.marker &&
-      vertical2[1] === this.currentPlayer.marker &&
-      vertical3[2] === this.currentPlayer.marker
-    ) {
-      console.log(`Player ${this.currentPlayer.marker} is the winner!`);
-      game.play = false;
-    }
-
-    if (
-      vertical1[2] === this.currentPlayer.marker &&
-      vertical2[1] === this.currentPlayer.marker &&
-      vertical3[0] === this.currentPlayer.marker
-    ) {
-      console.log(`Player ${this.currentPlayer.marker} is the winner!`);
-      game.play = false;
+      if (columnArr[i].join("") === winningCondition) {
+        return true;
+      }
     }
   },
+  checkDiagonalForWinner: function() {
+    const winningCondition = this.currentPlayer.marker.repeat(this.type);
 
+    let diagArr1 = [];
+
+    for (let i = 0; i < this.board.length; i++) {
+      diagArr1.push(this.board[i][i]);
+    }
+
+    if (diagArr1.join("") === winningCondition) {
+      return true;
+    }
+  },
+  checkDiagonal2ForWinner: function() {
+    const winningCondition = this.currentPlayer.marker.repeat(this.type);
+    let diagArr = [];
+
+    for (let i = 0; i < this.board.length; i++) {
+      diagArr.push(this.board[i][this.type - i - 1]);
+    }
+
+    if (diagArr.join("") === winningCondition) {
+      return true;
+    }
+  }
 };
