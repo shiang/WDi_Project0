@@ -1,24 +1,21 @@
 const game = {
   move: 1,
   play: false,
-  //type: null,
   type: 3,
-  playAgainstComp: true,
-  //board: null,
   board: [["", "", ""], ["", "", ""], ["", "", ""]],
   currentPlayer: {},
   player1: {
     marker: "X",
     symbol: `<i class="fas fa-times fa-3x" style="color: purple"></i>`,
     name: "",
-    numberOfWins: 0,
+    score: 0,
     isComputer: false
   },
   player2: {
     marker: "O",
     symbol: `<i class="far fa-circle fa-3x" style="color: blue"></i>`,
     name: "",
-    numberOfWins: 0,
+    score: 0,
     isComputer: false
   },
   reset: function() {
@@ -33,14 +30,14 @@ const game = {
       marker: "X",
       symbol: null,
       name: "",
-      numberOfWins: 0,
+      score: 0,
       isComputer: false
     };
     this.player2 = {
       marker: "O",
       symbol: null,
       name: "",
-      numberOfWins: 0,
+      score: 0,
       isComputer: false
     };
   },
@@ -54,6 +51,8 @@ const game = {
         return true;
       }
     }
+
+    return false;
   },
   checkColumnForWinner: function() {
     const winningCondition = this.currentPlayer.marker.repeat(this.type);
@@ -72,21 +71,25 @@ const game = {
         return true;
       }
     }
+
+    return false;
   },
-  checkDiagonalForWinner: function() {
+  checkLeftDiagonalForWinner: function() {
     const winningCondition = this.currentPlayer.marker.repeat(this.type);
 
-    let diagArr1 = [];
+    let diagArr = [];
 
     for (let i = 0; i < this.board.length; i++) {
-      diagArr1.push(this.board[i][i]);
+      diagArr.push(this.board[i][i]);
     }
 
-    if (diagArr1.join("") === winningCondition) {
+    if (diagArr.join("") === winningCondition) {
       return true;
     }
+
+    return false;
   },
-  checkDiagonal2ForWinner: function() {
+  checkRightDiagonalForWinner: function() {
     const winningCondition = this.currentPlayer.marker.repeat(this.type);
     let diagArr = [];
 
@@ -97,5 +100,7 @@ const game = {
     if (diagArr.join("") === winningCondition) {
       return true;
     }
-  }
+
+    return false;
+  },
 };
