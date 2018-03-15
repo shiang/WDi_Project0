@@ -1,8 +1,3 @@
-var database = firebase.database();
-
-const writeGameData = function (game) {
-  firebase.database().set(game);
-}
 
 //Helper functions
 const initGame = function() {
@@ -28,6 +23,17 @@ const checkForWinner = function(player) {
     game.play = false;
     return true;
   }
+
+  if (game.checkRowForWinner() === false ||
+      game.checkColumnForWinner() === false ||
+      game.checkLeftDiagonalForWinner() === false ||
+      game.checkRightDiagonalForWinner() === false
+  ) {
+    if (game.move > 9) {
+      alert (`It's a draw game!!`);
+    }
+
+  }
   return false;
 };
 
@@ -38,6 +44,13 @@ const clearBoard = function() {
     board[i].innerHTML = "";
   }
 };
+
+//Reset button
+$(".reset").on("click", function() {
+  game.reset();
+  clearBoard();
+  window.location.reload(true);
+});
 
 ////////////
 
@@ -82,12 +95,7 @@ $(document).ready(function() {
     }
   });
 
-  //Reset button
-  $(".reset").on("click", function() {
-    game.reset();
-    clearBoard();
-    window.location.reload(true);
-  });
+
 
   //////////////////Game logics///////////////////////////////////////////////
 
@@ -97,10 +105,13 @@ $(document).ready(function() {
 
     if (game.move <= 9 && game.move % 2 === 1) {
       //Place the "X" on the board, player is player1
-      $(this).html(game.currentPlayer.symbol);
+      $(this).html(game.currentPlayer.symbol).slideUp(100).fadeIn(400);
 
       //increment the game move
       game.move++;
+
+      $(".player1").removeClass('active focus');
+      $(".player2").addClass('active focus')
 
       //Update the board array with currentPlayer's marker
       //get current row and block index
@@ -120,11 +131,13 @@ $(document).ready(function() {
       }
     } else if (game.move <= 9 && game.move % 2 === 0) {
       //Place the "X" on the board, player is player1
-      $(this).html(game.currentPlayer.symbol);
+      $(this).html(game.currentPlayer.symbol).slideUp(100).fadeIn(400);;
 
       //increment the game move
       game.move++;
 
+      $(".player2").removeClass('active focus');
+      $(".player1").addClass('active focus');
       //Update the board array with currentPlayer's marker
       //get current row and block index
       const index = $(this).attr("id");
@@ -141,8 +154,6 @@ $(document).ready(function() {
       if (checkForWinner(game.currentPlayer) === false) {
         game.currentPlayer = game.player1;
       }
-    } else if (game.move > 9 && checkForWinner(game.currentPlayer) === false) {
-      alert(`Draw!`);
     }
   });
 });

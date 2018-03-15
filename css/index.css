@@ -3,6 +3,11 @@
     padding: 0;
   }
 
+  body {
+    background: url(images/background.jpg);
+    background-size: cover
+  }
+
   #whole {
     margin: 10px;
   }
