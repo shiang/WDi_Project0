@@ -6,14 +6,14 @@ const game = {
   currentPlayer: {},
   player1: {
     marker: "X",
-    symbol: `<i class="fas fa-times fa-3x" style="color: purple"></i>`,
+    symbol: `<i class="fas fa-times fa-3x" style="color: white"></i>`,
     name: "",
     score: 0,
     isComputer: false
   },
   player2: {
     marker: "O",
-    symbol: `<i class="far fa-circle fa-3x" style="color: blue"></i>`,
+    symbol: `<i class="fas fa-circle fa-3x" style="color: purple"></i>`,
     name: "",
     score: 0,
     isComputer: false

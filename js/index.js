@@ -1,4 +1,3 @@
-
 //Helper functions
 const initGame = function() {
   game.play = true;
@@ -6,36 +5,56 @@ const initGame = function() {
 };
 
 const checkForWinner = function(player) {
-  game.checkRowForWinner();
-  game.checkColumnForWinner();
-  game.checkLeftDiagonalForWinner();
-  game.checkRightDiagonalForWinner();
+  const isRowWinner = game.checkRowForWinner();
+  const isColWinner = game.checkColumnForWinner();
+  const isLDiagWinner = game.checkLeftDiagonalForWinner();
+  const isRDiagWinner = game.checkRightDiagonalForWinner();
 
   //If winningCondition is met, display winning message
   if (
-    game.checkRowForWinner() ||
-    game.checkColumnForWinner() ||
-    game.checkLeftDiagonalForWinner() ||
-    game.checkRightDiagonalForWinner()
+    isRowWinner ||
+    isColWinner ||
+    isLDiagWinner ||
+    isRDiagWinner
   ) {
-    alert(`Player ${player.marker} is the winner!`);
+    setTimeout(function() {
+      alert(`Player ${player.marker} is the winner!`);
+    }, 500);
+
+    setTimeout(function() {
+      resetGame();
+    }, 500);
+
     player.score++;
     game.play = false;
     return true;
   }
 
-  if (game.checkRowForWinner() === false ||
-      game.checkColumnForWinner() === false ||
-      game.checkLeftDiagonalForWinner() === false ||
-      game.checkRightDiagonalForWinner() === false
+  if (
+    isRowWinner === false ||
+    isColWinner === false ||
+    isLDiagWinner === false ||
+    isRDiagWinner === false
   ) {
     if (game.move > 9) {
-      alert (`It's a draw game!!`);
-    }
+      setTimeout(function() {
+        alert(`It's a draw game!!`);
+      }, 500);
+
+      setTimeout(function() {
+        resetGame();
+      }, 500);
+    };
 
   }
   return false;
 };
+
+const resetGame = function() {
+  game.reset();
+  clearBoard();
+  window.location.reload(true);
+}
 
 const clearBoard = function() {
   const board = $("#board tr td").get();
@@ -45,23 +64,10 @@ const clearBoard = function() {
   }
 };
 
-//Reset button
-$(".reset").on("click", function() {
-  game.reset();
-  clearBoard();
-  window.location.reload(true);
-});
-
-////////////
 
 //Page load
 $(document).ready(function() {
   initGame();
-
-  //writeGameData();
-
-  $("#scoreX").html(`Score for X: ${game.player1.score}`);
-  $("#scoreY").html(`Score for Y: ${game.player2.score}`);
 
   /////////////Menu button functions//////////////////
 
@@ -95,7 +101,10 @@ $(document).ready(function() {
     }
   });
 
-
+  //Reset button
+  $(".reset").on("click", function() {
+    resetGame();
+  });
 
   //////////////////Game logics///////////////////////////////////////////////
 
@@ -105,13 +114,16 @@ $(document).ready(function() {
 
     if (game.move <= 9 && game.move % 2 === 1) {
       //Place the "X" on the board, player is player1
-      $(this).html(game.currentPlayer.symbol).slideUp(100).fadeIn(400);
+      $(this)
+        .html(game.currentPlayer.symbol)
+        .slideUp(100)
+        .fadeIn(400);
 
       //increment the game move
       game.move++;
 
-      $(".player1").removeClass('active focus');
-      $(".player2").addClass('active focus')
+      $(".player1").removeClass("active focus");
+      $(".player2").addClass("active focus");
 
       //Update the board array with currentPlayer's marker
       //get current row and block index
@@ -131,13 +143,16 @@ $(document).ready(function() {
       }
     } else if (game.move <= 9 && game.move % 2 === 0) {
       //Place the "X" on the board, player is player1
-      $(this).html(game.currentPlayer.symbol).slideUp(100).fadeIn(400);;
+      $(this)
+        .html(game.currentPlayer.symbol)
+        .slideUp(100)
+        .fadeIn(600);
 
       //increment the game move
       game.move++;
 
-      $(".player2").removeClass('active focus');
-      $(".player1").addClass('active focus');
+      $(".player2").removeClass("active focus");
+      $(".player1").addClass("active focus");
       //Update the board array with currentPlayer's marker
       //get current row and block index
       const index = $(this).attr("id");
