@@ -40,3 +40,7 @@ Better late than never, below are the imaginary future plans for this game:
 - [ ] Display who's currently playing
 - [ ] Replace localStorage with Firebase!!
 - [ ] Cloud messaging (why not if with Firebase working)
+
+### License
+
+MIT
