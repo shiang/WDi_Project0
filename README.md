@@ -5,7 +5,7 @@ You can play this Tic Tac Toe game with your friend, and yes, only your friend.
 
 I was too obsessed to get the computer player part of the code working but failed miserably at the end, and didn't have enough time prettying this thing up!
 
-You can however same the game state and restore the previously state or reset it.
+You can however save the game state and restore the previously saved state or reset it.
 
 ### Installation
 
