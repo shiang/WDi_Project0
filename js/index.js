@@ -38,7 +38,7 @@ const checkForWinner = function(player) {
   ) {
     if (game.move > 9) {
       setTimeout(function() {
-        alert(`It's a draw game!!`);
+        alert(`It's a draw!!`);
       }, 500);
 
       setTimeout(function() {
@@ -105,6 +105,9 @@ $(document).ready(function() {
   $(".reset").on("click", function() {
     resetGame();
   });
+
+  $("#scoreX").html(game.player1.score);
+  $("#scoreY").html(game.player2.score);
 
   //////////////////Game logics///////////////////////////////////////////////
 

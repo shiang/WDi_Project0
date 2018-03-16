@@ -30,14 +30,14 @@ const game = {
       marker: "X",
       symbol: null,
       name: "",
-      score: 0,
+      score: this.player1.score,
       isComputer: false
     };
     this.player2 = {
       marker: "O",
       symbol: null,
       name: "",
-      score: 0,
+      score: this.player2.score,
       isComputer: false
     };
   },
