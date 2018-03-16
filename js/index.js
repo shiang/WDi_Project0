@@ -10,13 +10,24 @@ const checkForWinner = function(player) {
   const isLDiagWinner = game.checkLeftDiagonalForWinner();
   const isRDiagWinner = game.checkRightDiagonalForWinner();
 
-  //If winningCondition is met, display winning message
+
   if (
     isRowWinner ||
     isColWinner ||
     isLDiagWinner ||
     isRDiagWinner
   ) {
+    if (player === game.player1) {
+      game.player1.score++;
+      $("#scoreX").html(game.player1.score.toString());
+    }
+
+    if(player === game.player2) {
+      game.player2.score++;
+      $("#scoreY").html(game.player2.score.toString())
+    }
+
+    //If winningCondition is met, display winning message
     setTimeout(function() {
       alert(`Player ${player.marker} is the winner!`);
     }, 500);
@@ -25,17 +36,17 @@ const checkForWinner = function(player) {
       resetGame();
     }, 500);
 
-    player.score++;
+
     game.play = false;
     return true;
-  }
-
-  if (
+  } else if (
     isRowWinner === false ||
     isColWinner === false ||
     isLDiagWinner === false ||
     isRDiagWinner === false
   ) {
+
+    game.play = false;
     if (game.move > 9) {
       setTimeout(function() {
         alert(`It's a draw!!`);
@@ -53,7 +64,7 @@ const checkForWinner = function(player) {
 const resetGame = function() {
   game.reset();
   clearBoard();
-  window.location.reload(true);
+  location.reload(true);
 }
 
 const clearBoard = function() {
@@ -68,6 +79,9 @@ const clearBoard = function() {
 //Page load
 $(document).ready(function() {
   initGame();
+
+  $("#scoreX").html();
+  $("#scoreY").html();
 
   /////////////Menu button functions//////////////////
 
@@ -106,17 +120,15 @@ $(document).ready(function() {
     resetGame();
   });
 
-  $("#scoreX").html(game.player1.score);
-  $("#scoreY").html(game.player2.score);
-
   //////////////////Game logics///////////////////////////////////////////////
 
   //If any of the block is clicked
   $("#board tr td").on("click", function() {
-    //If game starts and no marker on the board when the player clicks anywhere on it
 
+    //If number of moves is odd numbers, it means it's player1 with marker "X"
     if (game.move <= 9 && game.move % 2 === 1) {
-      //Place the "X" on the board, player is player1
+
+      //Place the marker with animation
       $(this)
         .html(game.currentPlayer.symbol)
         .slideUp(100)
@@ -125,6 +137,7 @@ $(document).ready(function() {
       //increment the game move
       game.move++;
 
+      //Display which player is the next turn
       $(".player1").removeClass("active focus");
       $(".player2").addClass("active focus");
 
@@ -137,15 +150,19 @@ $(document).ready(function() {
       //Update the array according to the position player1 placed the "X" on the board
       [game.board[rowIndex - 1][columnIndex - 1]] = game.currentPlayer.marker;
 
+      //Disable the click on this cell
       $(this).off();
 
-      checkForWinner(game.currentPlayer);
+      //Check for winner
+      const isWinning = checkForWinner(game.currentPlayer);
 
-      if (checkForWinner(game.currentPlayer) === false) {
+      if (isWinning === false) {
+        //update the currentPlayer to Player2
         game.currentPlayer = game.player2;
       }
-    } else if (game.move <= 9 && game.move % 2 === 0) {
-      //Place the "X" on the board, player is player1
+    } else if (game.move <= 9 && game.move % 2 === 0) { //For player 2
+
+
       $(this)
         .html(game.currentPlayer.symbol)
         .slideUp(100)
@@ -156,6 +173,7 @@ $(document).ready(function() {
 
       $(".player2").removeClass("active focus");
       $(".player1").addClass("active focus");
+
       //Update the board array with currentPlayer's marker
       //get current row and block index
       const index = $(this).attr("id");
@@ -167,9 +185,9 @@ $(document).ready(function() {
 
       $(this).off();
 
-      checkForWinner(game.currentPlayer);
+      const isWinning = checkForWinner(game.currentPlayer);
 
-      if (checkForWinner(game.currentPlayer) === false) {
+      if (isWinning === false) {
         game.currentPlayer = game.player1;
       }
     }
